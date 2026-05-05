@@ -166,13 +166,10 @@ public class MiningSystem : MonoBehaviour
         SaveSystem.Save(State);
     }
 
-    // --- Helpers (les tiens) ---
     private void EnsureMiningNodesInitialized()
     {
         if (State.miningNodes == null)
             State.miningNodes = new System.Collections.Generic.List<MiningNodeState>();
-
-        Debug.Log($"[MiningSystem] Init nodes: db.miningNodes={db.miningNodes?.Count ?? -1} state.miningNodes(before)={State.miningNodes?.Count ?? -1}", this);
 
         foreach (var def in db.miningNodes)
         {
@@ -195,11 +192,67 @@ public class MiningSystem : MonoBehaviour
 
             State.miningNodes.Add(ns);
         }
-
-        Debug.Log($"[MiningSystem] Init nodes done: state.miningNodes(after)={State.miningNodes?.Count ?? -1}", this);
     }
+
     private MiningNodeState GetNodeState(string nodeId) => State.miningNodes.Find(n => n.nodeId == nodeId);
-    private void ApplyOfflineProgress() { /* idem que ta version */ }
+
+    private void ApplyOfflineProgress()
+    {
+        long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        long last = State.lastSeenUnixSeconds;
+        if (last <= 0) { State.lastSeenUnixSeconds = now; return; }
+
+        int delta = Mathf.Min((int)Mathf.Max(0, now - last), offlineCapSeconds);
+
+        // OFFLINE REGEN
+        foreach (var node in State.miningNodes)
+        {
+            var def = db.GetMiningNode(node.nodeId);
+            if (def == null) continue;
+
+            if (node.currentOre >= node.maxOre)
+                continue;
+
+            float interval = Mathf.Max(0.01f, def.regenIntervalSec);
+
+            // total time available for regen includes leftover timer
+            float total = node.regenTimer + delta;
+            int steps = Mathf.FloorToInt(total / interval);
+
+            node.regenTimer = total - steps * interval;
+
+            if (steps > 0)
+                node.currentOre = Mathf.Min(node.maxOre, node.currentOre + steps);
+        }
+
+        // OFFLINE MINING (consume ore that existed after regen)
+        if (!string.IsNullOrEmpty(State.activeMiningNodeId))
+        {
+            var def = db.GetMiningNode(State.activeMiningNodeId);
+            var node = def != null ? GetNodeState(def.id) : null;
+
+            if (def != null && node != null && def.actionDuration > 0.01f)
+            {
+                float total = State.activeMiningProgress + delta;
+                int cycles = Mathf.FloorToInt(total / def.actionDuration);
+                float remainder = total - cycles * def.actionDuration;
+
+                int possible = Mathf.Min(cycles, node.currentOre);
+                for (int i = 0; i < possible; i++)
+                    MineOne(def, node);
+
+                // If we ran out of ore offline, keep it "active" but no progress
+                State.activeMiningProgress = (node.currentOre > 0) ? remainder : 0f;
+            }
+        }
+
+        State.lastSeenUnixSeconds = now;
+    }
+
     private void OnApplicationQuit() => SaveSystem.Save(State);
-    private void OnApplicationPause(bool pause) { if (pause) SaveSystem.Save(State); }
+
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause) SaveSystem.Save(State);
+    }
 }

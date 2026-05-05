@@ -23,6 +23,12 @@ public class GlobalActionBarUGUI : MonoBehaviour
     private GlobalActionKind _kind = GlobalActionKind.None;
     private string _id = "";
 
+    private void Awake()
+    {
+        // Avoid staying invisible due to missing initial event.
+        if (root != null) root.SetActive(false);
+    }
+
     private void OnEnable()
     {
         if (clickAreaButton != null)
@@ -32,7 +38,9 @@ public class GlobalActionBarUGUI : MonoBehaviour
         }
 
         Subscribe();
-        ForceRebuild();
+
+        // Important: Force once after everything Awake() ran.
+        Invoke(nameof(ForceRebuild), 0f);
     }
 
     private void OnDisable()
@@ -50,7 +58,6 @@ public class GlobalActionBarUGUI : MonoBehaviour
     {
         if (coordinator == null) return;
 
-        // On écoute les state-changed des systèmes pour rebuild quand ça change
         if (coordinator.woodcutting != null) coordinator.woodcutting.OnStateChanged += ForceRebuild;
         if (coordinator.mining != null) coordinator.mining.OnStateChanged += ForceRebuild;
     }
@@ -67,7 +74,6 @@ public class GlobalActionBarUGUI : MonoBehaviour
     {
         if (router == null || coordinator == null) return;
 
-        // “envoie à celle en cours”
         if (coordinator.ActiveKind == GlobalActionKind.Woodcutting)
             router.Open("woodcutting");
         else if (coordinator.ActiveKind == GlobalActionKind.Mining)
@@ -113,13 +119,13 @@ public class GlobalActionBarUGUI : MonoBehaviour
                 if (kind == GlobalActionKind.Woodcutting)
                 {
                     var wc = coordinator.woodcutting;
-                    var def = (wc != null) ? wc.db.GetWoodcuttingAction(id) : null;
+                    var def = (wc != null && wc.db != null) ? wc.db.GetWoodcuttingAction(id) : null;
                     nameText.text = def != null ? def.displayName : id;
                 }
                 else
                 {
                     var ms = coordinator.mining;
-                    var def = (ms != null) ? ms.db.GetMiningNode(id) : null;
+                    var def = (ms != null && ms.db != null) ? ms.db.GetMiningNode(id) : null;
                     nameText.text = def != null ? def.displayName : id;
                 }
             }
@@ -138,7 +144,7 @@ public class GlobalActionBarUGUI : MonoBehaviour
         if (_kind == GlobalActionKind.Woodcutting)
         {
             var wc = coordinator.woodcutting;
-            if (wc == null || wc.State == null) { progress01Slider.value = 0f; return; }
+            if (wc == null || wc.State == null || wc.db == null) { progress01Slider.value = 0f; return; }
 
             var def = wc.db.GetWoodcuttingAction(_id);
             if (def == null || def.actionDuration <= 0.01f) { progress01Slider.value = 0f; return; }
@@ -150,7 +156,7 @@ public class GlobalActionBarUGUI : MonoBehaviour
         if (_kind == GlobalActionKind.Mining)
         {
             var ms = coordinator.mining;
-            if (ms == null || ms.State == null) { progress01Slider.value = 0f; return; }
+            if (ms == null || ms.State == null || ms.db == null) { progress01Slider.value = 0f; return; }
 
             var def = ms.db.GetMiningNode(_id);
             if (def == null || def.actionDuration <= 0.01f) { progress01Slider.value = 0f; return; }

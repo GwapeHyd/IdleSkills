@@ -90,25 +90,16 @@ public class MiningPanelUGUI : MonoBehaviour
 
     private void Refresh()
     {
-        Debug.Log($"[MiningPanelUGUI] Refresh mining={(mining!=null)} db={(mining!=null && mining.db!=null)} state={(mining!=null && mining.State!=null)} selected={_selectedNodeId}");
-
         if (mining == null || mining.db == null || mining.State == null)
             return;
 
         var def = mining.db.GetMiningNode(_selectedNodeId);
         if (def == null)
             return;
-        
-        Debug.Log($"[MiningPanelUGUI] refs actionText={(actionText!=null)} nameText={(nameText!=null)} gainText={(gainText!=null)} icon={(iconImage!=null)} slider={(progressSlider!=null)} button={(actionButton!=null)}");
-
-
 
         var node = mining.State.miningNodes.Find(n => n.nodeId == def.id);
-        Debug.Log($"[MiningPanelUGUI] nodesCount={mining.State.miningNodes?.Count ?? -1} node={(node!=null ? node.nodeId : "NULL")} current/max={(node!=null ? $"{node.currentOre}/{node.maxOre}" : "-")}");
         if (node == null)
             return;
-
-
 
         bool isRunningSelected = mining.State.activeMiningNodeId == def.id;
 
@@ -127,14 +118,13 @@ public class MiningPanelUGUI : MonoBehaviour
         // --- Icon ---
         if (iconImage != null)
         {
-            // Priorité: icône du node; sinon ore item
             Sprite sprite = def.icon != null ? def.icon : (def.oreItem != null ? def.oreItem.icon : null);
             iconImage.sprite = sprite;
             iconImage.enabled = sprite != null;
         }
 
         // --- Action slider ---
-        // Si node vide, l'action reste "en cours" mais la barre ne bouge pas.
+        // Progress is time-based; should be 0..duration. If you want a 0..1 slider, set maxValue=1 and assign normalized.
         if (progressSlider != null)
         {
             progressSlider.minValue = 0f;
@@ -156,8 +146,5 @@ public class MiningPanelUGUI : MonoBehaviour
             nodeXpSlider.maxValue = 1f;
             nodeXpSlider.value = MiningNodeProgression.GetNodeProgress01(node);
         }
-
-        // Optionnel: si tu veux empêcher de cliquer un node trop bas level joueur:
-        // if (actionButton != null) actionButton.interactable = mining.State.mining.level >= def.requiredMiningLevel;
     }
 }
