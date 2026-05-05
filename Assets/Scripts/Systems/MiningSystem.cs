@@ -167,8 +167,37 @@ public class MiningSystem : MonoBehaviour
     }
 
     // --- Helpers (les tiens) ---
-    private void EnsureMiningNodesInitialized() { Debug.Log($"[MiningSystem] Init nodes: db.miningNodes={db.miningNodes?.Count ?? -1} state.miningNodes(before)={State.miningNodes?.Count ?? -1}", this);
-/* idem que ta version */ }
+    private void EnsureMiningNodesInitialized()
+    {
+        if (State.miningNodes == null)
+            State.miningNodes = new System.Collections.Generic.List<MiningNodeState>();
+
+        Debug.Log($"[MiningSystem] Init nodes: db.miningNodes={db.miningNodes?.Count ?? -1} state.miningNodes(before)={State.miningNodes?.Count ?? -1}", this);
+
+        foreach (var def in db.miningNodes)
+        {
+            if (def == null || string.IsNullOrWhiteSpace(def.id))
+                continue;
+
+            var existing = State.miningNodes.Find(n => n.nodeId == def.id);
+            if (existing != null)
+                continue;
+
+            var ns = new MiningNodeState
+            {
+                nodeId = def.id,
+                level = 1,
+                xp = 0,
+                maxOre = Mathf.Max(1, def.baseMaxOre),
+                currentOre = Mathf.Max(0, def.baseMaxOre),
+                regenTimer = 0f
+            };
+
+            State.miningNodes.Add(ns);
+        }
+
+        Debug.Log($"[MiningSystem] Init nodes done: state.miningNodes(after)={State.miningNodes?.Count ?? -1}", this);
+    }
     private MiningNodeState GetNodeState(string nodeId) => State.miningNodes.Find(n => n.nodeId == nodeId);
     private void ApplyOfflineProgress() { /* idem que ta version */ }
     private void OnApplicationQuit() => SaveSystem.Save(State);
