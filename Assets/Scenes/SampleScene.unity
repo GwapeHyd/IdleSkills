@@ -5900,6 +5900,8 @@ MonoBehaviour:
   progressSlider: {fileID: 728386484}
   nodeLevelText: {fileID: 1461375281}
   nodeXpSlider: {fileID: 417297260}
+  playerLevelText: {fileID: 188186755}
+  playerXpSlider: {fileID: 1121116763}
 --- !u!1 &1461375279
 GameObject:
   m_ObjectHideFlags: 0

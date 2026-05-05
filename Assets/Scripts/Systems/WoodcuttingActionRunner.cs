@@ -15,6 +15,10 @@ public class WoodcuttingActionRunner : MonoBehaviour
 
     public event Action OnStateChanged;
 
+    private bool _pendingSave;
+    private float _saveTimer;
+    private const float SaveInterval = 1f;
+
     private void Awake()
     {
         if (db == null)
@@ -50,6 +54,17 @@ public class WoodcuttingActionRunner : MonoBehaviour
         {
             State.activeActionProgress -= action.actionDuration;
             CompleteOneAction(action);
+        }
+
+        if (_pendingSave)
+        {
+            _saveTimer += Time.deltaTime;
+            if (_saveTimer >= SaveInterval)
+            {
+                _saveTimer = 0f;
+                _pendingSave = false;
+                SaveSystem.Save(State);
+            }
         }
 
         OnStateChanged?.Invoke();
@@ -95,6 +110,11 @@ public class WoodcuttingActionRunner : MonoBehaviour
         // xp
         SkillSystem.AddXp(State.woodcutting, action.xpPerAction, woodcuttingXpTable);
 
+        if (!_pendingSave)
+        {
+            _pendingSave = true;
+            _saveTimer = 0f;
+        }
     }
 
     private void ApplyOfflineProgress()

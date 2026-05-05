@@ -16,6 +16,9 @@ public class MiningSystem : MonoBehaviour
     public event Action OnStateChanged;
 
     private bool _dirty;
+    private bool _pendingSave;
+    private float _saveTimer;
+    private const float SaveInterval = 1f;
 
     private void Awake()
     {
@@ -43,10 +46,29 @@ public class MiningSystem : MonoBehaviour
         // Action online (peut rendre dirty)
         TickMiningAction(Time.deltaTime);
 
+        if (_pendingSave)
+        {
+            _saveTimer += Time.deltaTime;
+            if (_saveTimer >= SaveInterval)
+            {
+                _saveTimer = 0f;
+                _pendingSave = false;
+                SaveSystem.Save(State);
+            }
+        }
+
         FlushDirty();
     }
 
-    private void MarkDirty() => _dirty = true;
+    private void MarkDirty()
+    {
+        _dirty = true;
+        if (!_pendingSave)
+        {
+            _pendingSave = true;
+            _saveTimer = 0f;
+        }
+    }
 
     private void FlushDirty()
     {
