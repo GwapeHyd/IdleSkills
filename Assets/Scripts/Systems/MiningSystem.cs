@@ -137,6 +137,7 @@ public class MiningSystem : MonoBehaviour
 
         // XP node + level up => +1 maxOre
         MiningNodeProgression.AddNodeXp(node, 1);
+        Debug.Log($"Mined 1 ore from {def.displayName}, node XP {node.xp}, node level {node.level}, current ore {node.currentOre}/{node.maxOre}");
     }
 
     public void StartMining(string nodeId)
