@@ -34,6 +34,11 @@ public class UIPanelRouterUGUI : MonoBehaviour
 
     [Header("Data / Systems")]
     public WoodcuttingActionRunner runner; // on l'utilise comme source PlayerState (skills/xp)
+    public MiningSystem mining;
+
+    [Header("XP Tables")]
+    public SkillXpTable woodcuttingXpTable; // (optionnel si tu veux overrider runner.woodcuttingXpTable)
+    public SkillXpTable miningXpTable;
 
     [Header("Views")]
     public List<View> views = new();
@@ -78,12 +83,18 @@ public class UIPanelRouterUGUI : MonoBehaviour
     {
         if (runner != null)
             runner.OnStateChanged += RefreshHeaders;
+        
+        if (mining != null)
+            mining.OnStateChanged += RefreshHeaders;
     }
 
     private void OnDisable()
     {
         if (runner != null)
             runner.OnStateChanged -= RefreshHeaders;
+
+        if (mining != null)
+            mining.OnStateChanged -= RefreshHeaders;
     }
 
     public void Open(string viewId)
@@ -127,20 +138,22 @@ public class UIPanelRouterUGUI : MonoBehaviour
 
         // Pour l’instant: on ne gère que Woodcutting (tu ajoutes Mining/Smithing ensuite)
         SkillState skill = null;
+        SkillXpTable table = null;
         switch (_current.skillKind)
         {
             case SkillKind.Woodcutting:
                 skill = runner.State.woodcutting;
+                table = woodcuttingXpTable != null ? woodcuttingXpTable : runner.woodcuttingXpTable;
                 break;
             case SkillKind.Mining:
                 skill = runner.State.mining;
+                table = miningXpTable != null ? miningXpTable : mining.miningXpTable;
                 break;
         }
 
-        if (skill == null)
+        if (skill == null || table == null)
             return;
 
-        var table = runner.woodcuttingXpTable;
         // Texte
         if (skillLevelText != null)
             skillLevelText.text = $"Skill Level {skill.level} / {table.maxLevel}";

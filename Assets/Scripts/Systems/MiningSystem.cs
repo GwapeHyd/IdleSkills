@@ -9,6 +9,10 @@ public class MiningSystem : MonoBehaviour
     public int offlineCapSeconds = 8 * 60 * 60;
 
     public PlayerState State { get; private set; } = new PlayerState();
+
+    [Header("XP")]
+    public SkillXpTable miningXpTable;
+
     public event Action OnStateChanged;
 
     private bool _dirty;
@@ -129,9 +133,7 @@ public class MiningSystem : MonoBehaviour
         if (def.oreItem != null)
             State.inventory.Add(def.oreItem.id, def.oreAmount);
 
-        // XP joueur mining (temporaire si tu n'as pas encore SkillXpTable)
-        State.mining.xp += def.playerXpPerAction;
-        State.mining.level = Mathf.Max(1, 1 + State.mining.xp / 100);
+        SkillSystem.AddXp(State.mining, def.playerXpPerAction, miningXpTable);
 
         // XP node + level up => +1 maxOre
         MiningNodeProgression.AddNodeXp(node, 1);
