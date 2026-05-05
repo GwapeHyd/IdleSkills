@@ -52,6 +52,33 @@ public class MiningPanelUGUI : MonoBehaviour
         Refresh();
     }
 
+    private void Update()
+    {
+        if (progressSlider == null || mining == null || mining.State == null || mining.db == null)
+            return;
+
+        var def = mining.db.GetMiningNode(_selectedNodeId);
+        if (def == null) return;
+
+        // Slider uniquement si ce node est l'action active
+        if (mining.State.activeMiningNodeId != def.id)
+            return;
+
+        var node = mining.State.miningNodes.Find(n => n.nodeId == def.id);
+        if (node == null || node.currentOre <= 0)
+        {
+            progressSlider.value = 0f;
+            return;
+        }
+
+        // Normalisé 0..1 (plus robuste)
+        progressSlider.minValue = 0f;
+        progressSlider.maxValue = 1f;
+        progressSlider.value = (def.actionDuration <= 0.01f)
+            ? 0f
+            : Mathf.Clamp01(mining.State.activeMiningProgress / def.actionDuration);
+    }
+
     private void OnDisable()
     {
         if (mining != null)
