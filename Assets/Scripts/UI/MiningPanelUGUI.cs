@@ -21,6 +21,8 @@ public class MiningPanelUGUI : MonoBehaviour
     [Header("Optional")]
     public TextMeshProUGUI nodeLevelText; // optionnel: "Node Lv 12 / 100"
     public Slider nodeXpSlider;           // optionnel: progress node xp (vers next level)
+    public TextMeshProUGUI playerLevelText; // optionnel: "Mining Lv 5"
+    public Slider playerXpSlider;           // optionnel: progress xp joueur (vers next level)
 
     private string _selectedNodeId;
     private ActionCoordinator _coordinator;
@@ -172,6 +174,20 @@ public class MiningPanelUGUI : MonoBehaviour
             nodeXpSlider.minValue = 0f;
             nodeXpSlider.maxValue = 1f;
             nodeXpSlider.value = MiningNodeProgression.GetNodeProgress01(node);
+        }
+
+        // --- Optional: player skill level/xp UI ---
+        if (playerLevelText != null && mining.State.mining != null)
+            playerLevelText.text = $"Mining Lv {mining.State.mining.level}";
+
+        if (playerXpSlider != null && mining.State.mining != null && mining.miningXpTable != null)
+        {
+            playerXpSlider.minValue = 0f;
+            playerXpSlider.maxValue = 1f;
+            playerXpSlider.value = SkillSystem.GetProgress01(
+                mining.State.mining.xp,
+                mining.State.mining.level,
+                mining.miningXpTable);
         }
     }
 }
