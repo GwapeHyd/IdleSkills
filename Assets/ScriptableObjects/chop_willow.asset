@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WoodcuttingActionDefinition
   id: chop_willow
   displayName: Willow
-  requiredLevel: 10
+  requiredLevel: 16
   actionDuration: 3
   outputItem: {fileID: 11400000, guid: e0e596bfe1232924fb0b94f23a65a041, type: 2}
   outputAmount: 1
-  xpPerAction: 14
+  xpPerAction: 18
   actionIcon: {fileID: 21300000, guid: 7007138f8d691b040b4fddd4616adb46, type: 3}

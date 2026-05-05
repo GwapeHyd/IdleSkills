@@ -33,12 +33,8 @@ public class UIPanelRouterUGUI : MonoBehaviour
     public enum SkillKind { None, Woodcutting, Mining /* + Smithing, etc. */ }
 
     [Header("Data / Systems")]
-    public WoodcuttingActionRunner runner; // on l'utilise comme source PlayerState (skills/xp)
+    public WoodcuttingActionRunner runner; 
     public MiningSystem mining;
-
-    [Header("XP Tables")]
-    public SkillXpTable woodcuttingXpTable; // (optionnel si tu veux overrider runner.woodcuttingXpTable)
-    public SkillXpTable miningXpTable;
 
     [Header("Views")]
     public List<View> views = new();
@@ -136,18 +132,17 @@ public class UIPanelRouterUGUI : MonoBehaviour
         if (runner == null || runner.State == null)
             return;
 
-        // Pour l’instant: on ne gère que Woodcutting (tu ajoutes Mining/Smithing ensuite)
         SkillState skill = null;
         SkillXpTable table = null;
         switch (_current.skillKind)
         {
             case SkillKind.Woodcutting:
                 skill = runner.State.woodcutting;
-                table = woodcuttingXpTable != null ? woodcuttingXpTable : runner.woodcuttingXpTable;
+                table = runner.woodcuttingXpTable;
                 break;
             case SkillKind.Mining:
-                skill = runner.State.mining;
-                table = miningXpTable != null ? miningXpTable : mining.miningXpTable;
+                skill = mining.State.mining;
+                table = mining.miningXpTable;
                 break;
         }
 

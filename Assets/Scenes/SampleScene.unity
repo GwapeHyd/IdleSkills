@@ -2709,7 +2709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiningSystem
   db: {fileID: 11400000, guid: 2ed56ea176fa5fa4387f65c41122a1a6, type: 2}
   offlineCapSeconds: 28800
-  miningXpTable: {fileID: 0}
+  miningXpTable: {fileID: 11400000, guid: 35c750a658d53a240886707fc6bc09d1, type: 2}
 --- !u!1 &658074730
 GameObject:
   m_ObjectHideFlags: 0
@@ -5900,6 +5900,8 @@ MonoBehaviour:
   progressSlider: {fileID: 728386484}
   nodeLevelText: {fileID: 1461375281}
   nodeXpSlider: {fileID: 417297260}
+  playerLevelText: {fileID: 188186755}
+  playerXpSlider: {fileID: 1121116763}
 --- !u!1 &1461375279
 GameObject:
   m_ObjectHideFlags: 0
