@@ -17,9 +17,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dadc2f844586eb342a91768d4d8ceacd, type: 2}
   - {fileID: 11400000, guid: e0e596bfe1232924fb0b94f23a65a041, type: 2}
   - {fileID: 11400000, guid: a3212d85e0903014783a21204be0ffb5, type: 2}
+  - {fileID: 11400000, guid: 961a1749cbb6ce64db334962ddf31b5b, type: 2}
   woodcuttingActions:
   - {fileID: 11400000, guid: 7360153d49c89d64ea719993808eeeb3, type: 2}
   - {fileID: 11400000, guid: 1412d3841b0f0fc4da84d1255bb2b0f0, type: 2}
   - {fileID: 11400000, guid: 715c7410c22e975489839f2c12ea614f, type: 2}
   miningNodes:
   - {fileID: 11400000, guid: e2961c9a2cae3b34c9e54b75528aad39, type: 2}
+  - {fileID: 11400000, guid: 13bf52cfb38f105409786311bf773ce8, type: 2}

@@ -18,6 +18,10 @@ public class WoodcuttingPanelUGUI : MonoBehaviour
     public Image iconImage;            // icône (log ou arbre)
     public Slider progressSlider;      // barre de progression
 
+    [Header("UI (Locked)")]
+    public GameObject lockedOverlayRoot;      // panel sombre
+    public TextMeshProUGUI lockedOverlayText; // "LOCKED - Lv 5"
+
     private string _selectedActionId;
     private ActionCoordinator _coordinator;
 
@@ -76,6 +80,9 @@ public class WoodcuttingPanelUGUI : MonoBehaviour
         var selected = runner.db.GetWoodcuttingAction(_selectedActionId);
         if (selected == null) return;
 
+        if (!runner.CanStart(selected))
+            return;
+
         bool isRunningSelected = runner.State.activeActionId == selected.id;
 
         // Toggle: si déjà en cours => stop, sinon => start cette action
@@ -96,6 +103,19 @@ public class WoodcuttingPanelUGUI : MonoBehaviour
         var action = runner.db.GetWoodcuttingAction(_selectedActionId);
         if (action == null)
             return;
+        
+        int required = Mathf.Max(1, action.requiredLevel);
+        int current = runner.State.woodcutting != null ? runner.State.woodcutting.level : 1;
+        bool unlocked = current >= required;
+
+        if (lockedOverlayRoot != null)
+            lockedOverlayRoot.SetActive(!unlocked);
+
+        if (lockedOverlayText != null)
+            lockedOverlayText.text = $"LOCKED - Lv {required}";
+
+        if (actionButton != null)
+            actionButton.interactable = unlocked; // bloque le clic si pas le niveau
 
         // Texts
         if (actionText != null) actionText.text = "Cut";

@@ -9,7 +9,7 @@ public class WoodcuttingActionRunner : MonoBehaviour
     [Header("Offline")]
     public int offlineCapSeconds = 8 * 60 * 60; // 8h
 
-    public PlayerState State { get; private set; } = new PlayerState();
+    public PlayerState State { get; private set; } 
 
     public SkillXpTable woodcuttingXpTable;
 
@@ -29,7 +29,7 @@ public class WoodcuttingActionRunner : MonoBehaviour
 
         db.BuildIndexes();
 
-        State = SaveSystem.LoadOrCreate();
+        State = GameManager.Instance.State;
         ApplyOfflineProgress();
 
         OnStateChanged?.Invoke();
@@ -146,15 +146,5 @@ public class WoodcuttingActionRunner : MonoBehaviour
         State.lastSeenUnixSeconds = now;
         SaveSystem.Save(State);
         OnStateChanged?.Invoke();
-    }
-
-    private void OnApplicationQuit()
-    {
-        SaveSystem.Save(State);
-    }
-
-    private void OnApplicationPause(bool pause)
-    {
-        if (pause) SaveSystem.Save(State);
     }
 }

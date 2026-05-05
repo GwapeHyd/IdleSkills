@@ -25,7 +25,7 @@ public class MiningSystem : MonoBehaviour
         if (db == null) { Debug.LogError("[MiningSystem] db is NULL", this); return; }
         db.BuildIndexes();
 
-        State = SaveSystem.LoadOrCreate();
+        State = GameManager.Instance.State;
 
         EnsureMiningNodesInitialized();
         ApplyOfflineProgress();
@@ -272,12 +272,5 @@ public class MiningSystem : MonoBehaviour
         }
 
         State.lastSeenUnixSeconds = now;
-    }
-
-    private void OnApplicationQuit() => SaveSystem.Save(State);
-
-    private void OnApplicationPause(bool pause)
-    {
-        if (pause) SaveSystem.Save(State);
     }
 }

@@ -22,6 +22,10 @@ public class MiningPanelUGUI : MonoBehaviour
     public TextMeshProUGUI nodeLevelText; // optionnel: "Node Lv 12 / 100"
     public Slider nodeXpSlider;           // optionnel: progress node xp (vers next level)
 
+    [Header("UI (Locked)")]
+    public GameObject lockedOverlayRoot;
+    public TextMeshProUGUI lockedOverlayText;
+
     private string _selectedNodeId;
     private ActionCoordinator _coordinator;
 
@@ -105,6 +109,12 @@ public class MiningPanelUGUI : MonoBehaviour
         var def = mining.db.GetMiningNode(_selectedNodeId);
         if (def == null) return;
 
+        if (mining.State.mining.level < def.requiredMiningLevel)
+        {
+            // optionnel: feedback UI/son
+            return;
+        }
+
         bool isRunningSelected = mining.State.activeMiningNodeId == def.id;
 
         if (isRunningSelected)
@@ -123,6 +133,19 @@ public class MiningPanelUGUI : MonoBehaviour
         var def = mining.db.GetMiningNode(_selectedNodeId);
         if (def == null)
             return;
+
+        int required = Mathf.Max(1, def.requiredMiningLevel);
+        int current = mining.State.mining != null ? mining.State.mining.level : 1;
+        bool unlocked = current >= required;
+
+        if (lockedOverlayRoot != null)
+            lockedOverlayRoot.SetActive(!unlocked);
+
+        if (lockedOverlayText != null)
+            lockedOverlayText.text = $"LOCKED - Lv {required}";
+
+        if (actionButton != null)
+            actionButton.interactable = unlocked;
 
         var node = mining.State.miningNodes.Find(n => n.nodeId == def.id);
         if (node == null)
