@@ -7,10 +7,12 @@ public class GameDatabase : ScriptableObject
     public List<ItemDefinition> items = new();
     public List<WoodcuttingActionDefinition> woodcuttingActions = new();
     public List<MiningNodeDefinition> miningNodes = new();
+    public SmithingRecipeDefinition[] smithingRecipes;
 
     private Dictionary<string, ItemDefinition> _itemById;
     private Dictionary<string, WoodcuttingActionDefinition> _wcById;
     private Dictionary<string, MiningNodeDefinition> _mnById;
+    private Dictionary<string, SmithingRecipeDefinition> _smithingById;
 
     public void BuildIndexes()
     {
@@ -28,6 +30,11 @@ public class GameDatabase : ScriptableObject
         foreach (var n in miningNodes)
             if (n && !string.IsNullOrWhiteSpace(n.id))
                 _mnById[n.id] = n;
+
+        _smithingById = new Dictionary<string, SmithingRecipeDefinition>();
+        foreach (var r in smithingRecipes)
+            if (r && !string.IsNullOrWhiteSpace(r.id))
+                _smithingById[r.id] = r;
     }
 
     public ItemDefinition GetItem(string id)
@@ -38,4 +45,7 @@ public class GameDatabase : ScriptableObject
 
     public MiningNodeDefinition GetMiningNode(string id)
         => (id != null && _mnById != null && _mnById.TryGetValue(id, out var n)) ? n : null;
+
+    public SmithingRecipeDefinition GetSmithingRecipe(string id)
+        => (id != null && _smithingById != null && _smithingById.TryGetValue(id, out var r)) ? r : null;
 }

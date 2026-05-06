@@ -14,13 +14,15 @@ public class PlayerState
     public InventoryState inventory = new();
     public SkillState woodcutting = new();
     public SkillState mining = new();
+    public SkillState smithing = new();
     public List<MiningNodeState> miningNodes = new List<MiningNodeState>();
 
-    // action en cours
-    public string activeActionId = "";      // ex: "chop_tree" ou ""
-    public float activeActionProgress = 0f; // 0..duration
+    public string activeActionId = "";      
+    public float activeActionProgress = 0f; 
     public string activeMiningNodeId = "";
     public float activeMiningProgress = 0f;
+    public string activeSmithingRecipeId = "";
+    public float activeSmithingProgress = 0f;
 
     // offline
     public long lastSeenUnixSeconds = 0;

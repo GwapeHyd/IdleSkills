@@ -18,6 +18,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e0e596bfe1232924fb0b94f23a65a041, type: 2}
   - {fileID: 11400000, guid: a3212d85e0903014783a21204be0ffb5, type: 2}
   - {fileID: 11400000, guid: 961a1749cbb6ce64db334962ddf31b5b, type: 2}
+  - {fileID: 11400000, guid: 02ce6c433f5798549bfb3484ebc586e2, type: 2}
+  - {fileID: 11400000, guid: c3b1330a6e316b948a526acde4476a7d, type: 2}
   woodcuttingActions:
   - {fileID: 11400000, guid: 7360153d49c89d64ea719993808eeeb3, type: 2}
   - {fileID: 11400000, guid: 1412d3841b0f0fc4da84d1255bb2b0f0, type: 2}
@@ -25,3 +27,6 @@ MonoBehaviour:
   miningNodes:
   - {fileID: 11400000, guid: e2961c9a2cae3b34c9e54b75528aad39, type: 2}
   - {fileID: 11400000, guid: 13bf52cfb38f105409786311bf773ce8, type: 2}
+  smithingRecipes:
+  - {fileID: 11400000, guid: 891eed32239ef0a4897aac2f6778f6e7, type: 2}
+  - {fileID: 11400000, guid: 2a337c8cb2868c443b59b17dfa457445, type: 2}

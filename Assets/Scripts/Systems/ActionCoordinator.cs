@@ -6,6 +6,7 @@ public class ActionCoordinator : MonoBehaviour
 {
     public WoodcuttingActionRunner woodcutting;
     public MiningSystem mining;
+    public SmithingActionRunner smithing;
 
     public GlobalActionKind ActiveKind
     {
@@ -33,6 +34,7 @@ public class ActionCoordinator : MonoBehaviour
     {
         if (woodcutting != null) woodcutting.StopAction();
         if (mining != null) mining.StopMining();
+        if (smithing != null) smithing.StopAction();
     }
 
     public void StartWoodcutting(string actionId)
@@ -45,5 +47,11 @@ public class ActionCoordinator : MonoBehaviour
     {
         StopAll();
         if (mining != null) mining.StartMining(nodeId);
+    }
+
+    public void StartSmithing(string recipeId)
+    {
+        StopAll();
+        if (smithing != null) smithing.StartAction(recipeId);
     }
 }

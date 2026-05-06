@@ -32,4 +32,14 @@ public class InventoryState
             e.amount += amount;
         }
     }
+
+    public bool Remove(string itemId, int amount)
+    {
+        if (amount <= 0) return true;
+        var e = entries.Find(x => x.itemId == itemId);
+        if (e == null || e.amount < amount) return false;
+        e.amount -= amount;
+        if (e.amount <= 0) entries.Remove(e);
+        return true;
+    }
 }

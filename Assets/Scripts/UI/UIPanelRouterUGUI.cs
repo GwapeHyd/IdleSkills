@@ -30,11 +30,12 @@ public class UIPanelRouterUGUI : MonoBehaviour
         public SkillKind skillKind = SkillKind.None;
     }
 
-    public enum SkillKind { None, Woodcutting, Mining /* + Smithing, etc. */ }
+    public enum SkillKind { None, Woodcutting, Mining, Smithing /* etc. */ }
 
     [Header("Data / Systems")]
     public WoodcuttingActionRunner runner; 
     public MiningSystem mining;
+    public SmithingActionRunner smithing;
 
     [Header("Views")]
     public List<View> views = new();
@@ -82,6 +83,9 @@ public class UIPanelRouterUGUI : MonoBehaviour
         
         if (mining != null)
             mining.OnStateChanged += RefreshHeaders;
+
+        if (smithing != null)
+            smithing.OnStateChanged += RefreshHeaders;
     }
 
     private void OnDisable()
@@ -91,6 +95,9 @@ public class UIPanelRouterUGUI : MonoBehaviour
 
         if (mining != null)
             mining.OnStateChanged -= RefreshHeaders;
+
+        if (smithing != null)
+            smithing.OnStateChanged -= RefreshHeaders;
     }
 
     public void Open(string viewId)
@@ -134,6 +141,7 @@ public class UIPanelRouterUGUI : MonoBehaviour
 
         SkillState skill = null;
         SkillXpTable table = null;
+        
         switch (_current.skillKind)
         {
             case SkillKind.Woodcutting:
@@ -144,10 +152,17 @@ public class UIPanelRouterUGUI : MonoBehaviour
                 skill = mining.State.mining;
                 table = mining.miningXpTable;
                 break;
+            case SkillKind.Smithing:
+                skill = smithing.State.smithing;
+                table = smithing.smithingXpTable;
+                break;
         }
 
         if (skill == null || table == null)
+        {
+            Debug.LogWarning($"[UIPanelRouterUGUI] Skill header for view '{_current.id}' requires a valid skill and XP table.", this);
             return;
+        }
 
         // Texte
         if (skillLevelText != null)
