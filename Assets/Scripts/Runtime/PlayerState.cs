@@ -16,6 +16,7 @@ public class PlayerState
     public SkillState mining = new();
     public SkillState smithing = new();
     public List<MiningNodeState> miningNodes = new List<MiningNodeState>();
+    public List<TreeState> treeStates = new List<TreeState>();
 
     public string activeActionId = "";      
     public float activeActionProgress = 0f; 

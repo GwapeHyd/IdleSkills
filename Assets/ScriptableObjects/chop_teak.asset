@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3afcb9601ff7164d9535671c88a462b, type: 3}
+  m_Name: chop_teak
+  m_EditorClassIdentifier: Assembly-CSharp::WoodcuttingActionDefinition
+  id: chop_teak
+  displayName: Teak
+  requiredLevel: 24
+  actionDuration: 3.5
+  outputItem: {fileID: 11400000, guid: 76f05c77005e0774b8394e6a8b6b382d, type: 2}
+  outputAmount: 1
+  xpPerAction: 30
+  actionIcon: {fileID: -717128393011454161, guid: 6e46d1b5dd4a567499476088a571202a, type: 3}

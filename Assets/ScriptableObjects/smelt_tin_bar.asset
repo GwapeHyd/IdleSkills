@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7eec28747c909f40989175adc387461, type: 3}
-  m_Name: smelt_rock_bar
+  m_Name: smelt_tin_bar
   m_EditorClassIdentifier: Assembly-CSharp::SmithingRecipeDefinition
-  id: smelt_rock_bar
-  displayName: Rock Bar
-  icon: {fileID: 0}
+  id: smelt_tin_bar
+  displayName: Tin Bar
+  icon: {fileID: 528237307555572841, guid: c5b9f0250bd091643a9ffcb9a7080cdb, type: 3}
   requiredSmithingLevel: 1
   craftDuration: 2
   requires:
-  - itemId: ore_rock
+  - itemId: ore_tin
     amount: 5
-  outputItem: {fileID: 11400000, guid: 02ce6c433f5798549bfb3484ebc586e2, type: 2}
+  outputItem: {fileID: 11400000, guid: c3b1330a6e316b948a526acde4476a7d, type: 2}
   outputAmount: 1
   xpPerCraft: 8

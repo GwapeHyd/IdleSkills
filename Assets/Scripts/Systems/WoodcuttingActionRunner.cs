@@ -41,6 +41,7 @@ public class WoodcuttingActionRunner : MonoBehaviour
         if (string.IsNullOrEmpty(State.activeActionId))
             return;
 
+
         var action = db.GetWoodcuttingAction(State.activeActionId);
         if (action == null)
         {
@@ -48,11 +49,20 @@ public class WoodcuttingActionRunner : MonoBehaviour
             return;
         }
 
+        // Calcul de la durée d'action modifiée par le niveau de l'arbre
+        float actionDuration = action.actionDuration;
+        if (!string.IsNullOrEmpty(action.id) && State.treeStates != null)
+        {
+            var tree = State.treeStates.Find(t => t.treeId == action.id);
+            int treeLevel = tree != null ? tree.level : 0;
+            actionDuration = Mathf.Max(0.1f, action.actionDuration - 0.01f * treeLevel);
+        }
+
         State.activeActionProgress += Time.deltaTime;
 
-        while (State.activeActionProgress >= action.actionDuration)
+        while (State.activeActionProgress >= actionDuration)
         {
-            State.activeActionProgress -= action.actionDuration;
+            State.activeActionProgress -= actionDuration;
             CompleteOneAction(action);
         }
 
@@ -105,10 +115,27 @@ public class WoodcuttingActionRunner : MonoBehaviour
 
     private void CompleteOneAction(WoodcuttingActionDefinition action)
     {
-        // loot
+        if (action.xpPerAction > 0)
+            AnnouncementEvents.Announce($"+{action.xpPerAction} XP Woodcutting");
+
         State.inventory.Add(action.outputItem.id, action.outputAmount);
-        // xp
+
+        int total = State.inventory.GetAmount(action.outputItem.id);
+        AnnouncementEvents.Announce($"+{action.outputAmount} {action.outputItem.displayName} (Total: {total})");
+
         SkillSystem.AddXp(State.woodcutting, action.xpPerAction, woodcuttingXpTable);
+
+        // Ajout XP arbre
+        if (!string.IsNullOrEmpty(action.id))
+        {
+            var tree = State.treeStates.Find(t => t.treeId == action.id);
+            if (tree == null)
+            {
+                tree = new TreeState { treeId = action.id };
+                State.treeStates.Add(tree);
+            }
+            TreeProgression.AddTreeXp(tree, 1);
+        }
 
         if (!_pendingSave)
         {
@@ -116,6 +143,7 @@ public class WoodcuttingActionRunner : MonoBehaviour
             _saveTimer = 0f;
         }
     }
+
 
     private void ApplyOfflineProgress()
     {

@@ -21,6 +21,9 @@ public class SmithingPanelUGUI : MonoBehaviour
     public GameObject lockedOverlayRoot;
     public TextMeshProUGUI lockedOverlayText;
 
+    [Header("UI (Crafting Setup)")]
+    public GameObject craftingSetupRoot;
+
     private string _selectedRecipeId;
     private ActionCoordinator _coordinator;
 
@@ -40,7 +43,7 @@ public class SmithingPanelUGUI : MonoBehaviour
         if (actionButton != null)
         {
             actionButton.onClick.RemoveAllListeners();
-            actionButton.onClick.AddListener(OnActionClicked);
+            actionButton.onClick.AddListener(OnActionChosen);
         }
 
         Refresh();
@@ -77,6 +80,13 @@ public class SmithingPanelUGUI : MonoBehaviour
             _coordinator?.StartSmithing(recipe.id);
 
         Refresh();
+    }
+
+    private void OnActionChosen()
+    {
+        //setup le panel de craft ou il y aura le actionClicked
+        if (craftingSetupRoot != null)
+            craftingSetupRoot.SetActive(true);
     }
 
     private void Refresh()

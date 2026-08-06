@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: log_normal
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
   id: log_normal
-  displayName: Normal Logs
-  icon: {fileID: 21300000, guid: 80311c24f96643747b8ea66a18f863ab, type: 3}
+  displayName: Normal Log
+  icon: {fileID: 8854102933033120291, guid: 1c995a8fab29eeb4b90b77e5957debab, type: 3}
   maxStack: 99999

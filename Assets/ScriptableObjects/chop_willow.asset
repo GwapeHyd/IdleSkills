@@ -18,5 +18,5 @@ MonoBehaviour:
   actionDuration: 3
   outputItem: {fileID: 11400000, guid: e0e596bfe1232924fb0b94f23a65a041, type: 2}
   outputAmount: 1
-  xpPerAction: 18
-  actionIcon: {fileID: 21300000, guid: 7007138f8d691b040b4fddd4616adb46, type: 3}
+  xpPerAction: 22
+  actionIcon: {fileID: -8027094794595157055, guid: 6e46d1b5dd4a567499476088a571202a, type: 3}

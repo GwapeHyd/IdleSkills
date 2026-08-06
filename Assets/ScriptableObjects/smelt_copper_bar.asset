@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SmithingRecipeDefinition
   id: smelt_copper_bar
   displayName: Copper Bar
-  icon: {fileID: 0}
+  icon: {fileID: 2276263992414599392, guid: c5b9f0250bd091643a9ffcb9a7080cdb, type: 3}
   requiredSmithingLevel: 1
   craftDuration: 2
   requires:
   - itemId: ore_copper
     amount: 5
-  outputItem: {fileID: 11400000, guid: c3b1330a6e316b948a526acde4476a7d, type: 2}
+  outputItem: {fileID: 11400000, guid: 02ce6c433f5798549bfb3484ebc586e2, type: 2}
   outputAmount: 1
   xpPerCraft: 8

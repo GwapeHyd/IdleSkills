@@ -166,10 +166,10 @@ public class UIPanelRouterUGUI : MonoBehaviour
 
         // Texte
         if (skillLevelText != null)
-            skillLevelText.text = $"Skill Level {skill.level} / {table.maxLevel}";
+            skillLevelText.text = $"Skill Level : {skill.level} / {table.maxLevel}";
 
         if (skillXpText != null)
-            skillXpText.text = $"Skill XP {skill.xp:N0}";
+            skillXpText.text = $"Skill XP : {skill.xp:N0} / {table.GetXpForLevel(skill.level + 1):N0}";
 
         if (skillXpSlider != null)
         {

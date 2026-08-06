@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ore_copper
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
   id: ore_copper
-  displayName: Copper Ores
-  icon: {fileID: 21300000, guid: c10de4581abc5d94ea1555935a9c9152, type: 3}
+  displayName: Copper Ore
+  icon: {fileID: 1392413761674417751, guid: 4125da4ad094b24439dd6ece0daf1b20, type: 3}
   maxStack: 99999

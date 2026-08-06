@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class WoodcuttingPanelUGUI : MonoBehaviour
 {
     [Header("Systems")]
@@ -17,6 +18,11 @@ public class WoodcuttingPanelUGUI : MonoBehaviour
     public TextMeshProUGUI gainText;   // "10 Skill XP / 2 seconds"
     public Image iconImage;            // icône (log ou arbre)
     public Slider progressSlider;      // barre de progression
+
+    [Header("UI (Tree XP)")]
+    public TextMeshProUGUI treeLevelText; // "Tree Lv 3"
+    public Slider treeXpSlider;           // slider xp arbre
+    public TextMeshProUGUI treeXpText;    // "23 / 55 XP"
 
     [Header("UI (Locked)")]
     public GameObject lockedOverlayRoot;      // panel sombre
@@ -121,9 +127,17 @@ public class WoodcuttingPanelUGUI : MonoBehaviour
         if (actionText != null) actionText.text = "Cut";
         if (nameText != null) nameText.text = action.displayName;
 
+        // Calcul de la durée d'action modifiée par le niveau de l'arbre
+        float actionDuration = action.actionDuration;
+        if (runner.State.treeStates != null && !string.IsNullOrEmpty(action.id))
+        {
+            var tree = runner.State.treeStates.Find(t => t.treeId == action.id);
+            int treeLevel = tree != null ? tree.level : 0;
+            actionDuration = Mathf.Max(0.1f, action.actionDuration - 0.01f * treeLevel);
+        }
         if (gainText != null)
         {
-            string sec = action.actionDuration.ToString("0.##");
+            string sec = actionDuration.ToString("0.##");
             gainText.text = $"{action.xpPerAction} Skill XP / {sec} seconds";
         }
 
@@ -141,14 +155,31 @@ public class WoodcuttingPanelUGUI : MonoBehaviour
         if (progressSlider != null)
         {
             progressSlider.minValue = 0f;
-            progressSlider.maxValue = Mathf.Max(0.01f, action.actionDuration);
+            progressSlider.maxValue = Mathf.Max(0.01f, actionDuration);
             progressSlider.value = isRunningSelected ? runner.State.activeActionProgress : 0f;
         }
 
-        // Option: feedback visuel du bouton (désactivé si running autre action)
-        // Ici: tu peux autoriser le changement d'action en cours (en cliquant une autre card)
-        // Si tu veux l'interdire, décommente:
-        // bool runningOther = !string.IsNullOrEmpty(runner.State.activeActionId) && !isRunningSelected;
-        // if (actionButton != null) actionButton.interactable = !runningOther;
+        // --- Affichage niveau/XP arbre ---
+        if (runner.State.treeStates != null && !string.IsNullOrEmpty(action.id))
+        {
+            var tree = runner.State.treeStates.Find(t => t.treeId == action.id);
+            int treeLevel = tree != null ? tree.level : 0;
+            int treeXp = tree != null ? tree.xp : 0;
+            int xpToNext = TreeProgression.XpToNext(treeLevel);
+            float progress = (xpToNext > 0) ? Mathf.Clamp01((float)treeXp / xpToNext) : 0f;
+
+            if (treeLevelText != null)
+                treeLevelText.text = $"Tree Lv {treeLevel}";
+
+            if (treeXpSlider != null)
+            {
+                treeXpSlider.minValue = 0f;
+                treeXpSlider.maxValue = 1f;
+                treeXpSlider.value = progress;
+            }
+
+            if (treeXpText != null)
+                treeXpText.text = $"{treeXp} / {xpToNext}";
+        }
     }
 }

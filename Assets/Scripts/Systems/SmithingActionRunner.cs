@@ -62,7 +62,6 @@ public class SmithingActionRunner : MonoBehaviour
         {
             State.activeSmithingProgress -= recipe.craftDuration;
 
-            // Re-check ingrédients à chaque craft (important)
             if (!CanPay(recipe))
             {
                 StopAction();

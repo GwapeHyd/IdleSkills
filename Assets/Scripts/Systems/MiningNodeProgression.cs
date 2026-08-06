@@ -9,7 +9,7 @@ public static class MiningNodeProgression
     {
         level = Mathf.Clamp(level, 1, MaxLevel);
         // courbe simple qui augmente
-        return 0 + level * 5; // ex: L1->2 = 75, L10->11 = 300 ...
+        return 0 + level * 5; // ex: L1->2 = 5, L10->11 = 50 ...
     }
 
     public static void AddNodeXp(MiningNodeState node, int amount)

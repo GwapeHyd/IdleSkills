@@ -152,14 +152,21 @@ public class MiningSystem : MonoBehaviour
 
         node.currentOre -= 1;
 
+        if (def.playerXpPerAction > 0)
+            AnnouncementEvents.Announce($"+{def.playerXpPerAction} XP Mining");
+
         if (def.oreItem != null)
+        {
             State.inventory.Add(def.oreItem.id, def.oreAmount);
 
-        SkillSystem.AddXp(State.mining, def.playerXpPerAction, miningXpTable);
+            int total = State.inventory.GetAmount(def.oreItem.id);
 
-        // XP node + level up => +1 maxOre
+            AnnouncementEvents.Announce($"+{def.oreAmount} {def.oreItem.displayName} (Total: {total})");
+        }
+
+        SkillSystem.AddXp(State.mining, def.playerXpPerAction, miningXpTable);
+    
         MiningNodeProgression.AddNodeXp(node, 1);
-        Debug.Log($"Mined 1 ore from {def.displayName}, node XP {node.xp}, node level {node.level}, current ore {node.currentOre}/{node.maxOre}");
     }
 
     public void StartMining(string nodeId)
@@ -245,6 +252,8 @@ public class MiningSystem : MonoBehaviour
             int steps = Mathf.FloorToInt(total / interval);
 
             node.regenTimer = total - steps * interval;
+
+            TickRegen(last);
 
             if (steps > 0)
                 node.currentOre = Mathf.Min(node.maxOre, node.currentOre + steps);

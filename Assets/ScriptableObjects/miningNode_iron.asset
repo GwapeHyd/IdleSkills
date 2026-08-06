@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f38315fc5c04264aa01d76b7c352a28, type: 3}
-  m_Name: miningNode_rock
+  m_Name: miningNode_iron
   m_EditorClassIdentifier: Assembly-CSharp::MiningNodeDefinition
-  id: rock
-  displayName: Rock Ore
-  icon: {fileID: 21300000, guid: 4469c79e8ea018a41b2ca4c2fefb0d24, type: 3}
-  requiredMiningLevel: 1
-  actionDuration: 1
-  playerXpPerAction: 5
-  baseMaxOre: 10
-  regenIntervalSec: 5
-  oreItem: {fileID: 11400000, guid: 961a1749cbb6ce64db334962ddf31b5b, type: 2}
+  id: iron
+  displayName: Iron Ore
+  icon: {fileID: -7406656003989991045, guid: c5b9f0250bd091643a9ffcb9a7080cdb, type: 3}
+  requiredMiningLevel: 8
+  actionDuration: 2.4
+  playerXpPerAction: 14
+  baseMaxOre: 8
+  regenIntervalSec: 10
+  oreItem: {fileID: 11400000, guid: 788ce5d8d25ead44086f88de86c63d03, type: 2}
   oreAmount: 1

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a028255d7ab53741976b948f1212411, type: 3}
-  m_Name: ore_rock
+  m_Name: log_teak
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
-  id: ore_rock
-  displayName: Rock Ores
-  icon: {fileID: 21300000, guid: 1d4e5c42e9d02eb41bbd71ba3c075349, type: 3}
+  id: log_teak
+  displayName: Teak Log
+  icon: {fileID: -1149559044, guid: 1c995a8fab29eeb4b90b77e5957debab, type: 3}
   maxStack: 99999

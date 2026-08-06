@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiningNodeDefinition
   id: copper
   displayName: Copper Ore
-  icon: {fileID: 21300000, guid: 6126de40c7d31964eac73c63e4075fee, type: 3}
+  icon: {fileID: 9104632456472535294, guid: 4125da4ad094b24439dd6ece0daf1b20, type: 3}
   requiredMiningLevel: 1
   actionDuration: 2
-  playerXpPerAction: 10
+  playerXpPerAction: 12
   baseMaxOre: 6
-  regenIntervalSec: 10
+  regenIntervalSec: 8
   oreItem: {fileID: 11400000, guid: a3212d85e0903014783a21204be0ffb5, type: 2}
   oreAmount: 1

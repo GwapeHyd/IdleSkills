@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a028255d7ab53741976b948f1212411, type: 3}
-  m_Name: bar_rock
+  m_Name: ore_iron
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
-  id: bar_rock
-  displayName: Rock Bar
-  icon: {fileID: 0}
+  id: ore_iron
+  displayName: Iron Ore
+  icon: {fileID: 8251837425816296057, guid: 4125da4ad094b24439dd6ece0daf1b20, type: 3}
   maxStack: 99999
